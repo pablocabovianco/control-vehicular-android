@@ -11,6 +11,8 @@ import android.widget.ToggleButton;
 import me.aflak.arduino.Arduino;
 import me.aflak.arduino.ArduinoListener;
 
+import static ar.edu.untref.controlvehicular.CodeConstants.*;
+
 public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
     private Arduino arduino;
@@ -34,46 +36,43 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         posBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mensaje = !posBtn.isChecked() ? "0" : "1";
-                //char c = (char)(Integer.parseInt(mensaje,2));
-                //arduino.send(new byte[]{(byte) c});
-                arduino.send(mensaje.getBytes());
+                byte c = posBtn.isChecked() ? ENCENDER_LUZ_POSICION : APAGAR_LUZ_POSICION;
+                arduino.send(new byte[]{c});
             }
         });
 
         bajBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mensaje = !bajBtn.isChecked() ? "2" : "3";
-                arduino.send(mensaje.getBytes());
+                byte c = bajBtn.isChecked() ? ENCENDER_LUZ_BAJA : APAGAR_LUZ_BAJA;
+                arduino.send(new byte[]{c});
             }
         });
 
         altBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mensaje = !altBtn.isChecked() ? "4" : "5";
-                arduino.send(mensaje.getBytes());
+                byte c = altBtn.isChecked() ? ENCENDER_LUZ_ALTA : APAGAR_LUZ_ALTA;
+                arduino.send(new byte[]{c});
             }
         });
 
         refBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mensaje = !refBtn.isChecked() ? "6" : "7";
-                arduino.send(mensaje.getBytes());
+                byte c = refBtn.isChecked() ? ENCENDER_LUZ_REFLECTOR : APAGAR_LUZ_REFLECTOR;
+                arduino.send(new byte[]{c});
             }
         });
 
         intBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mensaje = !intBtn.isChecked() ? "8" : "9";
-                arduino.send(mensaje.getBytes());
+                byte c = intBtn.isChecked() ? ENCENDER_LUZ_INTERIOR : APAGAR_LUZ_INTERIOR;
+                arduino.send(new byte[]{c});
             }
         });
         arduino = new Arduino(this);
-        arduino.addVendorId(0x10c4);
     }
 
     @Override
