@@ -39,8 +39,7 @@
                 android:text="@string/posicion"
                 android:textOff="@string/posicion"
                 android:textOn="@string/posicion"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
 
             <ToggleButton
                 android:id="@+id/tbBajas"
@@ -49,8 +48,7 @@
                 android:text="@string/bajas"
                 android:textOff="@string/bajas"
                 android:textOn="@string/bajas"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
 
             <ToggleButton
                 android:id="@+id/tbAltas"
@@ -59,8 +57,7 @@
                 android:text="@string/altas"
                 android:textOff="@string/altas"
                 android:textOn="@string/altas"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
 
             <ToggleButton
                 android:id="@+id/tbReflector"
@@ -69,8 +66,7 @@
                 android:text="@string/reflector"
                 android:textOff="@string/reflector"
                 android:textOn="@string/reflector"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -84,8 +80,62 @@
                 android:text="@string/interior"
                 android:textOff="@string/interior"
                 android:textOn="@string/interior"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
+        </TableRow>
+
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tableOtros"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="12pt"
+        app:layout_constraintEnd_toEndOf="@+id/tableLuces"
+        app:layout_constraintStart_toStartOf="@+id/tableLuces"
+        app:layout_constraintTop_toBottomOf="@+id/tableLuces">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textBocina2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tituloBocina"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textBloqPuertas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tituloBloqPuertas"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ToggleButton
+                android:id="@+id/tbBocina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bocina"
+                android:textOff="@string/bocina"
+                android:textOn="@string/bocina"
+                android:textSize="16sp" />
+
+            <ToggleButton
+                android:id="@+id/tbBloqPuertas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bloquearPuertas"
+                android:textOff="@string/bloquearPuertas"
+                android:textOn="@string/desbloquearPuertas"
+                android:textSize="16sp" />
+
         </TableRow>
 
     </TableLayout>

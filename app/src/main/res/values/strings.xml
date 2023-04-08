@@ -15,4 +15,9 @@
     <string name="reflector">Reflector</string>
     <string name="interior">Interior</string>
     <string name="tituloLuces">Luces</string>
+    <string name="tituloBocina">Bocina</string>
+    <string name="tituloBloqPuertas">Bloqueo de puertas</string>
+    <string name="bocina">Bocina</string>
+    <string name="bloquearPuertas">Bloquear Puertas</string>
+    <string name="desbloquearPuertas">Desbloquear Puertas</string>
 </resources>

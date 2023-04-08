@@ -5,6 +5,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ToggleButton;
 
@@ -24,17 +25,45 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
         arduino = new Arduino(this);
 
+        //Luces
         ToggleButton posBtn = findViewById(R.id.tbPosicion);
         ToggleButton bajBtn = findViewById(R.id.tbBajas);
         ToggleButton altBtn = findViewById(R.id.tbAltas);
         ToggleButton refBtn = findViewById(R.id.tbReflector);
         ToggleButton intBtn = findViewById(R.id.tbInterior);
 
+        //Otros
+        ToggleButton bocBtn = findViewById(R.id.tbBocina);
+        ToggleButton blPBtn = findViewById(R.id.tbBloqPuertas);
+
         posBtn.setOnClickListener(new ToggleButtonClickListener(posBtn, ENCENDER_LUZ_POSICION, APAGAR_LUZ_POSICION, arduino));
         bajBtn.setOnClickListener(new ToggleButtonClickListener(bajBtn, ENCENDER_LUZ_BAJA, APAGAR_LUZ_BAJA, arduino));
         altBtn.setOnClickListener(new ToggleButtonClickListener(altBtn, ENCENDER_LUZ_ALTA, APAGAR_LUZ_ALTA, arduino));
         refBtn.setOnClickListener(new ToggleButtonClickListener(refBtn, ENCENDER_LUZ_REFLECTOR, APAGAR_LUZ_REFLECTOR, arduino));
         intBtn.setOnClickListener(new ToggleButtonClickListener(intBtn, ENCENDER_LUZ_INTERIOR, APAGAR_LUZ_INTERIOR, arduino));
+        blPBtn.setOnClickListener(new ToggleButtonClickListener(blPBtn, BLOQUEAR_PUERTAS, DESBLOQUEAR_PUERTAS, arduino));
+
+        //La bocina tiene un tratamiento especial ya que solo se activa mientras se mantiene presionada
+        bocBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // El botón ha sido presionado
+                        bocBtn.setChecked(true);
+                        arduino.send(new byte[]{SONAR_BOCINA});
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        // El botón ha sido soltado
+                        bocBtn.setChecked(false);
+                        arduino.send(new byte[]{SILENCIAR_BOCINA});
+                        return true;
+                }
+                return false;
+            }
+        });
+
 
     }
 
