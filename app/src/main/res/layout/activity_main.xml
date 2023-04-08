@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TableLayout
+        android:id="@+id/tableLuces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="12pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textLuces"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tituloLuces"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ToggleButton
+                android:id="@+id/tbPosicion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/posicion"
+                android:textOff="@string/posicion"
+                android:textOn="@string/posicion"
+                android:textSize="16sp"
+                />
+
+            <ToggleButton
+                android:id="@+id/tbBajas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bajas"
+                android:textOff="@string/bajas"
+                android:textOn="@string/bajas"
+                android:textSize="16sp"
+                />
+
+            <ToggleButton
+                android:id="@+id/tbAltas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/altas"
+                android:textOff="@string/altas"
+                android:textOn="@string/altas"
+                android:textSize="16sp"
+                />
+
+            <ToggleButton
+                android:id="@+id/tbReflector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reflector"
+                android:textOff="@string/reflector"
+                android:textOn="@string/reflector"
+                android:textSize="16sp"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ToggleButton
+                android:id="@+id/tbInterior"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/interior"
+                android:textOff="@string/interior"
+                android:textOn="@string/interior"
+                android:textSize="16sp"
+                />
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
