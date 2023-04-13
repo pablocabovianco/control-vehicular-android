@@ -1,29 +1,43 @@
 package ar.edu.untref.controlvehicular;
 
+import android.annotation.SuppressLint;
 import android.hardware.usb.UsbDevice;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import me.aflak.arduino.Arduino;
 import me.aflak.arduino.ArduinoListener;
+import me.ibrahimsn.lib.Speedometer;
 
 import static ar.edu.untref.controlvehicular.CodeConstants.*;
 
 public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
     private Arduino arduino;
+    private TextView displayTextView;
+    private Speedometer speedometer;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         arduino = new Arduino(this);
+        displayTextView = findViewById(R.id.diplayTextView);
+        displayTextView.setMovementMethod(new ScrollingMovementMethod());
+
+        speedometer = findViewById(R.id.speedometer) ;
+
 
         //Luces
         ToggleButton posBtn = findViewById(R.id.tbPosicion);
@@ -92,8 +106,27 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
     @Override
     public void onArduinoMessage(byte[] bytes) {
-        display(new String(bytes));
+        //Al recibir información de arduino:
+        String datos = new String(bytes);
+        int speed = 0;
+
+        try {
+            speed = Integer.parseInt(datos.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Error en la conversión");
+        }
+
+        speedometer.setSpeed(speed, 500, onAnimationEnd);
     }
+
+    //función auxiliar necesaria para actualizar el velocímetro
+    private Function0<Unit> onAnimationEnd = new Function0<Unit>() {
+        @Override
+        public Unit invoke() {
+            // Código que se ejecuta al finalizar la animación
+            return null;
+        }
+    };
 
     @Override
     public void onArduinoOpened() {
@@ -115,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //displayTextView.append(message);
+                //displayTextView.setText(Integer.toString(speed));
             }
         });
     }
