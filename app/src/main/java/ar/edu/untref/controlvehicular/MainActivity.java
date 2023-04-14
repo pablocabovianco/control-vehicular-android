@@ -95,38 +95,23 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
     @Override
     public void onArduinoAttached(UsbDevice device) {
-        display("arduino attached...");
+        //display("arduino attached...");
         arduino.open(device);
     }
 
     @Override
     public void onArduinoDetached() {
-        display("arduino detached.");
+
+        //display("arduino detached.");
     }
 
     @Override
     public void onArduinoMessage(byte[] bytes) {
         //Al recibir información de arduino:
         String datos = new String(bytes);
-        int speed = 0;
-
-        try {
-            speed = Integer.parseInt(datos.trim());
-        } catch (NumberFormatException e) {
-            System.out.println("Error en la conversión");
-        }
-
-        speedometer.setSpeed(speed, 500, onAnimationEnd);
+        display(datos);
     }
 
-    //función auxiliar necesaria para actualizar el velocímetro
-    private Function0<Unit> onAnimationEnd = new Function0<Unit>() {
-        @Override
-        public Unit invoke() {
-            // Código que se ejecuta al finalizar la animación
-            return null;
-        }
-    };
 
     @Override
     public void onArduinoOpened() {
@@ -136,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
     @Override
     public void onUsbPermissionDenied() {
-        display("Permission denied. Attempting again in 3 sec...");
+        //display("Permission denied. Attempting again in 3 sec...");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -148,7 +133,26 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //displayTextView.setText(Integer.toString(speed));
+                //displayTextView.setText(message);
+
+                //función auxiliar necesaria para actualizar el velocímetro
+                Function0<Unit> onAnimationEnd = new Function0<Unit>() {
+                    @Override
+                    public Unit invoke() {
+                        // Código que se ejecuta al finalizar la animación
+                        return null;
+                    }
+                };
+
+                int speed = 0;
+
+                try {
+                    speed = Integer.parseInt(message.trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("Error en la conversión");
+                }
+                speedometer.setSpeed(speed, 500, onAnimationEnd);
+
             }
         });
     }
