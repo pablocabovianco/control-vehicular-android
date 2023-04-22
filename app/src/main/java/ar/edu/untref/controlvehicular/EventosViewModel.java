@@ -24,4 +24,9 @@ public class EventosViewModel extends AndroidViewModel {
     public void insertEvento(EventoPorKilometraje eventoPorKilometraje){
         repository.insert(eventoPorKilometraje);
     }
+    public void deleteAllEventos(){
+        repository.delete();
+    }
+
+
 }

@@ -85,12 +85,12 @@
                 android:id="@+id/AgregarEventos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Agregar Evento" />
             <Button
                 android:id="@+id/MostrarEventos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Mostrar Evento" />
         </TableRow>
     </TableLayout>
 

@@ -21,8 +21,11 @@ public class EventosRepository {
     void insert(EventoPorKilometraje eventoPorKilometraje){
         new insertAsyncTask(eventoPorKilometrajeDao).execute(eventoPorKilometraje);
     }
+    void delete(){
+        new insertAsyncTaskDelete(eventoPorKilometrajeDao).execute();
+    }
 
-    private static class insertAsyncTask extends AsyncTask<EventoPorKilometraje, Void, Void>{
+    private static class insertAsyncTask extends AsyncTask<EventoPorKilometraje, Void, Void> {
         private EventoPorKilometrajeDao taskDao;
 
         insertAsyncTask(EventoPorKilometrajeDao eventoPorKilometrajeDao){
@@ -34,5 +37,21 @@ public class EventosRepository {
             taskDao.insertAll(eventoPorKilometrajes[0]);
             return null;
         }
+
+    }
+
+    private static class insertAsyncTaskDelete extends AsyncTask<EventoPorKilometraje, Void, Void> {
+        private EventoPorKilometrajeDao taskDao;
+
+        insertAsyncTaskDelete(EventoPorKilometrajeDao eventoPorKilometrajeDao){
+            taskDao = eventoPorKilometrajeDao;
+        }
+
+        @Override
+        protected Void doInBackground(EventoPorKilometraje... eventoPorKilometrajes) {
+            taskDao.deleteAll();
+            return null;
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package ar.edu.untref.controlvehicular;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         agregarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                agregarDatosPrueba();
+                //agregarDatosPrueba();
+                abrirPantallaAgregarEvento();
             }
         });
 
@@ -117,6 +119,11 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         this.agregarDato(100, "Cargar Nafta", "En ypf");
         this.agregarDato(3000, "Hacer VTV", "Se necesita VTV anterior");
         this.agregarDato(13000, "Cambiar cubiertas", "Bridgestone Pilot Street");
+    }
+
+    public void abrirPantallaAgregarEvento(){
+        Intent intent = new Intent(this, AgregarEventoActivity.class);
+        startActivity(intent);
     }
 
     public void mostrarEventosPorKilometraje(){

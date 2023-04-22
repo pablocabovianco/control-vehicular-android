@@ -14,4 +14,8 @@ public interface EventoPorKilometrajeDao {
 
     @Query("SELECT * FROM eventoPorKilometraje")
     LiveData<List<EventoPorKilometraje>> getAllEventoPorKilometraje();
+
+    @Query("DELETE FROM eventoPorKilometraje")
+    void deleteAll();
+
 }
