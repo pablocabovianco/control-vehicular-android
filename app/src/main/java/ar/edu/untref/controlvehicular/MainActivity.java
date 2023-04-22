@@ -4,11 +4,16 @@ import android.annotation.SuppressLint;
 import android.hardware.usb.UsbDevice;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.room.Room;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -20,11 +25,20 @@ import me.ibrahimsn.lib.Speedometer;
 
 import static ar.edu.untref.controlvehicular.CodeConstants.*;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
     private Arduino arduino;
     private TextView displayTextView;
     private Speedometer speedometer;
+
+    //Placeholder del kilometraje
+    public int kilometrosTotales = 1600;
+
+    //BBDD
+    EventosViewModel viewModel;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -37,7 +51,24 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         displayTextView.setMovementMethod(new ScrollingMovementMethod());
 
         speedometer = findViewById(R.id.speedometer) ;
+        //Manejo de BBDD
+        this.viewModel = ViewModelProviders.of(this).get(EventosViewModel.class);
 
+        Button agregarBtn = findViewById(R.id.AgregarEventos);
+        agregarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                agregarDatosPrueba();
+            }
+        });
+
+        Button mostrarEventosBtn = findViewById(R.id.MostrarEventos);
+        mostrarEventosBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mostrarEventosPorKilometraje();
+            }
+        });
 
         //Luces
         ToggleButton posBtn = findViewById(R.id.tbPosicion);
@@ -79,6 +110,31 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         });
 
 
+    }
+
+    //Pruebas para BBDD
+    public void agregarDatosPrueba(){
+        this.agregarDato(100, "Cargar Nafta", "En ypf");
+        this.agregarDato(3000, "Hacer VTV", "Se necesita VTV anterior");
+        this.agregarDato(13000, "Cambiar cubiertas", "Bridgestone Pilot Street");
+    }
+
+    public void mostrarEventosPorKilometraje(){
+       viewModel.getListaEventosPorKilometraje().observe(this, listaEventos -> {
+            if(listaEventos == null){
+                return;
+            }
+            for(EventoPorKilometraje lista: listaEventos){
+                System.out.println(lista.titulo + " vence en " + lista.kilometros);
+            }
+        });
+    }
+
+    public void agregarDato(int kilometros,String titulo,String descripcion){
+        //Creo el evento
+        EventoPorKilometraje nuevoEvento = new EventoPorKilometraje(kilometros + this.kilometrosTotales, titulo, descripcion);
+        //Lo agrego a la base
+        this.viewModel.insertEvento(nuevoEvento);
     }
 
     @Override
@@ -156,4 +212,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             }
         });
     }
+
+    //CODIGO IVAN
+
 }

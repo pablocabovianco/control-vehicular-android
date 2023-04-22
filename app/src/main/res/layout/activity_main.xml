@@ -81,8 +81,17 @@
                 android:textOff="@string/interior"
                 android:textOn="@string/interior"
                 android:textSize="16sp" />
+            <Button
+                android:id="@+id/AgregarEventos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button" />
+            <Button
+                android:id="@+id/MostrarEventos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button" />
         </TableRow>
-
     </TableLayout>
 
     <TableLayout
