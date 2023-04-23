@@ -5,12 +5,19 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AgregarEventoActivity extends AppCompatActivity {
     EventosViewModel viewModel;
 
+    private ListView listaEventos;
+    private ArrayAdapter<String> mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +26,9 @@ public class AgregarEventoActivity extends AppCompatActivity {
         this.viewModel = ViewModelProviders.of(this).get(EventosViewModel.class);
 
         Button agregarBtn = findViewById(R.id.btnGuardarEvento);
+        //Muestro los eventos cargados
+        listaEventos = findViewById(R.id.listaEventos);
+        mostrarEventosPorKilometraje();
         agregarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,7 +45,20 @@ public class AgregarEventoActivity extends AppCompatActivity {
         });
 
     }
-
+    public void mostrarEventosPorKilometraje(){
+        viewModel.getListaEventosPorKilometraje().observe(this, lista -> {
+            if(lista == null || lista.size() == 0) {
+                return;
+            }
+            //Muestro solo los titulos
+            List<String> titulosDeEventos = new ArrayList<>();
+            for(EventoPorKilometraje listaEntera: lista){
+                titulosDeEventos.add(listaEntera.titulo);
+            }
+            mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titulosDeEventos);
+            listaEventos.setAdapter(mAdapter);
+        });
+    }
     public void agregarEvento(){
         //Obtengo las variables de pantalla
         EditText campoTitulo = (EditText) findViewById(R.id.textTitulo);
@@ -52,10 +75,16 @@ public class AgregarEventoActivity extends AppCompatActivity {
 
         //Lo agrego a la base
         this.viewModel.insertEvento(nuevoEvento);
+        mostrarEventosPorKilometraje();
     }
 
     public void limpiarEventos(){
+
         this.viewModel.deleteAllEventos();
+        //Limpio la lista de vista
+        List<String> titulosDeEventos = new ArrayList<>();
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titulosDeEventos);
+        listaEventos.setAdapter(mAdapter);
     }
 
 

@@ -64,14 +64,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             }
         });
 
-        Button mostrarEventosBtn = findViewById(R.id.MostrarEventos);
-        mostrarEventosBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mostrarEventosPorKilometraje();
-            }
-        });
-
         //Luces
         ToggleButton posBtn = findViewById(R.id.tbPosicion);
         ToggleButton bajBtn = findViewById(R.id.tbBajas);
@@ -124,17 +116,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     public void abrirPantallaAgregarEvento(){
         Intent intent = new Intent(this, AgregarEventoActivity.class);
         startActivity(intent);
-    }
-
-    public void mostrarEventosPorKilometraje(){
-       viewModel.getListaEventosPorKilometraje().observe(this, listaEventos -> {
-            if(listaEventos == null){
-                return;
-            }
-            for(EventoPorKilometraje lista: listaEventos){
-                System.out.println(lista.titulo + " vence en " + lista.kilometros);
-            }
-        });
     }
 
     public void agregarDato(int kilometros,String titulo,String descripcion){

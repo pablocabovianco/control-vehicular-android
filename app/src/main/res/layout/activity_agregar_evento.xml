@@ -114,5 +114,15 @@
                 android:text="BORRAR EVENTOS" />
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ListView
+                android:id="@+id/listaEventos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </TableRow>
+
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
