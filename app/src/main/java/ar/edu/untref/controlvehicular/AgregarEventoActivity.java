@@ -73,9 +73,14 @@ public class AgregarEventoActivity extends AppCompatActivity {
         //Creo el evento
         EventoPorKilometraje nuevoEvento = new EventoPorKilometraje(kilometros, titulo, descripcion);
 
-        //Lo agrego a la base
+        //Lo agrego a la base y actualizo la lista
         this.viewModel.insertEvento(nuevoEvento);
         mostrarEventosPorKilometraje();
+
+        //Limpio los campos
+        campoTitulo.getText().clear();
+        campoDescripcion.getText().clear();
+        campoKilometros.getText().clear();
     }
 
     public void limpiarEventos(){

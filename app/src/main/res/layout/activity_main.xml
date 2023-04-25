@@ -81,6 +81,7 @@
                 android:textOff="@string/interior"
                 android:textOn="@string/interior"
                 android:textSize="16sp" />
+
             <Button
                 android:id="@+id/AgregarEventos"
                 android:layout_width="wrap_content"
