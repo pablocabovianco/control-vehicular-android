@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
         mediaPlayer = MediaPlayer.create(this, R.raw.goat_sound);;
+        //Sonido constante
+        mediaPlayer.setLooping(true);
+        //Empieza a sonar el motor
+        mediaPlayer.start();
 
         arduino = new Arduino(this);
         displayTextView = findViewById(R.id.diplayTextView);
@@ -67,12 +71,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             public void onClick(View view) {
                 //agregarDatosPrueba();
                 abrirPantallaAgregarEvento();
-                //Sonido constante
-                mediaPlayer.setLooping(true);
-                mediaPlayer.start();
-                //Ajusto velocidad de reproduccion
-                float speed = 0.75f;
-                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
             }
         });
 
@@ -211,6 +209,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
                 }
                 speedometer.setSpeed(speed, 500, onAnimationEnd);
 
+                //Ajusto velocidad de reproduccion, con un audio ajustado luego hacer vel = velActual/velMax
+                float velocidadPlayback = (float) (speed);
+                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(velocidadPlayback));
             }
         });
     }
