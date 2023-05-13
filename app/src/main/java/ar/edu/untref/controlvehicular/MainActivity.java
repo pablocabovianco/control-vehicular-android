@@ -1,8 +1,10 @@
 package ar.edu.untref.controlvehicular;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
@@ -33,7 +35,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     private Arduino arduino;
     private TextView displayTextView;
     private Speedometer speedometer;
-
+    //Sonidos
+    MediaPlayer mediaPlayer;
     //Placeholder del kilometraje
     public int kilometrosTotales = 1600;
 
@@ -46,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.goat_sound);;
 
         arduino = new Arduino(this);
         displayTextView = findViewById(R.id.diplayTextView);
@@ -61,6 +67,12 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             public void onClick(View view) {
                 //agregarDatosPrueba();
                 abrirPantallaAgregarEvento();
+                //Sonido constante
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start();
+                //Ajusto velocidad de reproduccion
+                float speed = 0.75f;
+                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
             }
         });
 
@@ -103,8 +115,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             }
         });
 
+        //Sonido de motor
 
     }
+
 
     //Pruebas para BBDD
     public void agregarDatosPrueba(){
