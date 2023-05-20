@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.PlaybackParams;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     private Speedometer speedometer;
     //Sonidos
     MediaPlayer mediaPlayer;
+    PlaybackParams params;
     //Placeholder del kilometraje
     public int kilometrosTotales = 1600;
 
@@ -51,11 +54,14 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         setContentView(R.layout.activity_main);
 
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.goat_sound);;
+        mediaPlayer = MediaPlayer.create(this, R.raw.sonido_i4);;
         //Sonido constante
         mediaPlayer.setLooping(true);
         //Empieza a sonar el motor
         mediaPlayer.start();
+
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        params = new PlaybackParams();
 
         arduino = new Arduino(this);
         displayTextView = findViewById(R.id.diplayTextView);
@@ -210,12 +216,18 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
                 speedometer.setSpeed(speed, 500, onAnimationEnd);
 
                 //Ajusto velocidad de reproduccion, con un audio ajustado luego hacer vel = velActual/velMax
-                float velocidadPlayback = (float) (speed);
-                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(velocidadPlayback));
+                //float velocidadPlayback = (float) (speed);
+                //mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(velocidadPlayback));
+                //CAMBIO VEL DE REPRODUCCION POR AJUSTE DE PITCH
+                try {
+                    params.setPitch((float) speed);
+                }catch (Exception e){
+                    params.setPitch(1.0f);
+                }
+                mediaPlayer.setPlaybackParams(params);
+
             }
         });
     }
-
-    //CODIGO IVAN
 
 }
