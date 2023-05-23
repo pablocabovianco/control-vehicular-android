@@ -215,12 +215,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
                 }
                 speedometer.setSpeed(speed, 500, onAnimationEnd);
 
-                //Ajusto velocidad de reproduccion, con un audio ajustado luego hacer vel = velActual/velMax
-                //float velocidadPlayback = (float) (speed);
-                //mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(velocidadPlayback));
-                //CAMBIO VEL DE REPRODUCCION POR AJUSTE DE PITCH
+                //Ajusto pitch de reproduccion, con un audio ajustado
                 try {
-                    params.setPitch((float) speed);
+                    params.setPitch(1.0f + (float) speed * 0.025f);
                 }catch (Exception e){
                     params.setPitch(1.0f);
                 }
