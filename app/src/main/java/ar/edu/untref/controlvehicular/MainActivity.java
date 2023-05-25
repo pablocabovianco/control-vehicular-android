@@ -162,19 +162,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             public void onClick(View view) {
 
                 locationTrack = new LocationTrack(MainActivity.this);
-
-
-                if (locationTrack.canGetLocation()) {
-
-
-                    double longitude = locationTrack.getLongitude();
-                    double latitude = locationTrack.getLatitude();
-
-                    Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-                } else {
-
-                    locationTrack.showSettingsAlert();
-                }
                 abrirGoogleMaps();
 
             }
