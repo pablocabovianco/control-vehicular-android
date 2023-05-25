@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 
@@ -148,18 +149,16 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
                 locationTrack = new LocationTrack(MainActivity.this);
 
-
                 if (locationTrack.canGetLocation()) {
-
 
                     double longitude = locationTrack.getLongitude();
                     double latitude = locationTrack.getLatitude();
 
-                    Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
                 } else {
 
                     locationTrack.showSettingsAlert();
                 }
+                abrirGoogleMaps();
 
             }
         });
@@ -208,7 +207,22 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     private boolean canMakeSmores() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
+    private void abrirGoogleMaps() {
+        String label = "Ubicación Actual"; // Etiqueta para la ubicación actual
 
+        // Obtener la ubicación actual del dispositivo en formato "latitud,longitud"
+        String currentLocation = String.valueOf(locationTrack.latitude) + "," + String.valueOf(locationTrack.longitude);
+
+        if (currentLocation != null) {
+            Uri gmmIntentUri = Uri.parse("geo:" + currentLocation + "?q=" + Uri.encode(currentLocation + "(" + label + ")"));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps"); // Especifica que se debe abrir la aplicación Google Maps
+
+            if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(mapIntent);
+            }
+        }
+    }
     @Override
     protected void onStart() {
         super.onStart();

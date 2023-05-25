@@ -20,5 +20,5 @@
     <string name="bocina">Bocina</string>
     <string name="bloquearPuertas">Bloquear Puertas</string>
     <string name="desbloquearPuertas">Desbloquear Puertas</string>
-    <string name="localizar">Localizar</string>
+    <string name="localizar">GPS</string>
 </resources>
