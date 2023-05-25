@@ -28,7 +28,6 @@ public class AgregarEventoActivity extends AppCompatActivity {
         Button agregarBtn = findViewById(R.id.btnGuardarEvento);
         //Muestro los eventos cargados
         listaEventos = findViewById(R.id.listaEventos);
-        mostrarEventosPorKilometraje();
         agregarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,20 +43,6 @@ public class AgregarEventoActivity extends AppCompatActivity {
             }
         });
 
-    }
-    public void mostrarEventosPorKilometraje(){
-        viewModel.getListaEventosPorKilometraje().observe(this, lista -> {
-            if(lista == null || lista.size() == 0) {
-                return;
-            }
-            //Muestro solo los titulos
-            List<String> titulosDeEventos = new ArrayList<>();
-            for(EventoPorKilometraje listaEntera: lista){
-                titulosDeEventos.add(listaEntera.titulo);
-            }
-            mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titulosDeEventos);
-            listaEventos.setAdapter(mAdapter);
-        });
     }
     public void agregarEvento(){
         //Obtengo las variables de pantalla
@@ -75,7 +60,6 @@ public class AgregarEventoActivity extends AppCompatActivity {
 
         //Lo agrego a la base y actualizo la lista
         this.viewModel.insertEvento(nuevoEvento);
-        mostrarEventosPorKilometraje();
 
         //Limpio los campos
         campoTitulo.getText().clear();

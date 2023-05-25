@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             @Override
             public void onClick(View view) {
                 //agregarDatosPrueba();
-                abrirPantallaAgregarEvento();
+                mostrarMostrarEventosActivity();
             }
         });
 
@@ -131,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         this.agregarDato(13000, "Cambiar cubiertas", "Bridgestone Pilot Street");
     }
 
-    public void abrirPantallaAgregarEvento(){
-        Intent intent = new Intent(this, AgregarEventoActivity.class);
+    public void mostrarMostrarEventosActivity(){
+        Intent intent = new Intent(this, MostrarEventosActivity.class);
         startActivity(intent);
     }
 
