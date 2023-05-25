@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EventosViewModel extends AndroidViewModel {
     EventosRepository repository;
-    LiveData<List<EventoPorKilometraje>> listaEventosPorKilometraje;
+    LiveData<List<Eventos>> listaEventosPorKilometraje;
 
     public EventosViewModel(Application application){
         super(application);
@@ -17,12 +17,12 @@ public class EventosViewModel extends AndroidViewModel {
         listaEventosPorKilometraje = repository.getEvento();
     }
 
-    LiveData<List<EventoPorKilometraje>> getListaEventosPorKilometraje(){
+    LiveData<List<Eventos>> getListaEventosPorKilometraje(){
         return listaEventosPorKilometraje;
     }
 
-    public void insertEvento(EventoPorKilometraje eventoPorKilometraje){
-        repository.insert(eventoPorKilometraje);
+    public void insertEvento(Eventos eventos){
+        repository.insert(eventos);
     }
     public void deleteAllEventos(){
         repository.delete();

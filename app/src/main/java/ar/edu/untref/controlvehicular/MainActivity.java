@@ -1,7 +1,6 @@
 package ar.edu.untref.controlvehicular;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.media.AudioManager;
@@ -9,10 +8,7 @@ import android.media.MediaPlayer;
 import android.media.PlaybackParams;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.room.Room;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -29,8 +25,6 @@ import me.aflak.arduino.ArduinoListener;
 import me.ibrahimsn.lib.Speedometer;
 
 import static ar.edu.untref.controlvehicular.CodeConstants.*;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
@@ -75,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         agregarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //agregarDatosPrueba();
                 mostrarMostrarEventosActivity();
             }
         });
@@ -124,23 +117,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     }
 
 
-    //Pruebas para BBDD
-    public void agregarDatosPrueba(){
-        this.agregarDato(100, "Cargar Nafta", "En ypf");
-        this.agregarDato(3000, "Hacer VTV", "Se necesita VTV anterior");
-        this.agregarDato(13000, "Cambiar cubiertas", "Bridgestone Pilot Street");
-    }
-
     public void mostrarMostrarEventosActivity(){
         Intent intent = new Intent(this, MostrarEventosActivity.class);
         startActivity(intent);
-    }
-
-    public void agregarDato(int kilometros,String titulo,String descripcion){
-        //Creo el evento
-        EventoPorKilometraje nuevoEvento = new EventoPorKilometraje(kilometros + this.kilometrosTotales, titulo, descripcion);
-        //Lo agrego a la base
-        this.viewModel.insertEvento(nuevoEvento);
     }
 
     @Override

@@ -6,9 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {EventoPorKilometraje.class}, version = 1)
+@Database(entities = {Eventos.class}, version = 1)
 public abstract class EventosDB extends RoomDatabase {
-    public abstract EventoPorKilometrajeDao eventoPorKilometrajeDao();
+    public abstract EventoDao eventoPorKilometrajeDao();
 
     public static EventosDB INSTANCE;
 

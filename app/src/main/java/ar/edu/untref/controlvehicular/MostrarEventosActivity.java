@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,7 +46,7 @@ public class MostrarEventosActivity extends AppCompatActivity {
             }
             //Muestro solo los titulos
             List<String> titulosDeEventos = new ArrayList<>();
-            for(EventoPorKilometraje listaEntera: lista){
+            for(Eventos listaEntera: lista){
                 titulosDeEventos.add(listaEntera.titulo);
             }
             mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titulosDeEventos);

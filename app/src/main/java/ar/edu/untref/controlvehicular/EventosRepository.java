@@ -8,47 +8,47 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class EventosRepository {
-    EventoPorKilometrajeDao eventoPorKilometrajeDao;
+    EventoDao eventoDao;
 
     EventosRepository(Application application){
         EventosDB db = EventosDB.getDatabase(application);
-        eventoPorKilometrajeDao = db.eventoPorKilometrajeDao();
+        eventoDao = db.eventoPorKilometrajeDao();
     }
-    LiveData<List<EventoPorKilometraje>> getEvento(){
-        return eventoPorKilometrajeDao.getAllEventoPorKilometraje();
+    LiveData<List<Eventos>> getEvento(){
+        return eventoDao.getAllEventoPorKilometraje();
     }
 
-    void insert(EventoPorKilometraje eventoPorKilometraje){
-        new insertAsyncTask(eventoPorKilometrajeDao).execute(eventoPorKilometraje);
+    void insert(Eventos eventos){
+        new insertAsyncTask(eventoDao).execute(eventos);
     }
     void delete(){
-        new insertAsyncTaskDelete(eventoPorKilometrajeDao).execute();
+        new insertAsyncTaskDelete(eventoDao).execute();
     }
 
-    private static class insertAsyncTask extends AsyncTask<EventoPorKilometraje, Void, Void> {
-        private EventoPorKilometrajeDao taskDao;
+    private static class insertAsyncTask extends AsyncTask<Eventos, Void, Void> {
+        private EventoDao taskDao;
 
-        insertAsyncTask(EventoPorKilometrajeDao eventoPorKilometrajeDao){
-            taskDao = eventoPorKilometrajeDao;
+        insertAsyncTask(EventoDao eventoDao){
+            taskDao = eventoDao;
         }
 
         @Override
-        protected Void doInBackground(EventoPorKilometraje... eventoPorKilometrajes) {
-            taskDao.insertAll(eventoPorKilometrajes[0]);
+        protected Void doInBackground(Eventos... eventosEnTabla) {
+            taskDao.insertAll(eventosEnTabla[0]);
             return null;
         }
 
     }
 
-    private static class insertAsyncTaskDelete extends AsyncTask<EventoPorKilometraje, Void, Void> {
-        private EventoPorKilometrajeDao taskDao;
+    private static class insertAsyncTaskDelete extends AsyncTask<Eventos, Void, Void> {
+        private EventoDao taskDao;
 
-        insertAsyncTaskDelete(EventoPorKilometrajeDao eventoPorKilometrajeDao){
-            taskDao = eventoPorKilometrajeDao;
+        insertAsyncTaskDelete(EventoDao eventoDao){
+            taskDao = eventoDao;
         }
 
         @Override
-        protected Void doInBackground(EventoPorKilometraje... eventoPorKilometrajes) {
+        protected Void doInBackground(Eventos... eventosEnTabla) {
             taskDao.deleteAll();
             return null;
         }
