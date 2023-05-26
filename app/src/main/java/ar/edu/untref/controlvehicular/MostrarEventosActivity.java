@@ -8,18 +8,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MostrarEventosActivity extends AppCompatActivity {
 
     EventosViewModel viewModel;
 
     private ListView listaEventos;
-    private ArrayAdapter<String> mAdapter;
+    private ArrayAdapter<String> mAdapterItem;
+    private ArrayAdapter<String> mAdapterSubItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +51,43 @@ public class MostrarEventosActivity extends AppCompatActivity {
             if(lista == null || lista.size() == 0) {
                 return;
             }
-            //Muestro solo los titulos
+            //Muestro titulos y vencimiento
             List<String> titulosDeEventos = new ArrayList<>();
+            List<String> vencimientos = new ArrayList<>();
+                    List<Map<String, String>> data = new ArrayList<Map<String, String>>();
             for(Eventos listaEntera: lista){
-                titulosDeEventos.add(listaEntera.titulo);
+                Map<String, String> datum = new HashMap<String, String>(2);
+                datum.put("datos1", listaEntera.titulo);
+                datum.put("datos2", listaEntera.porKilometros ? Integer.toString(listaEntera.kilometros) : formateoFecha(listaEntera.fecha));
+                data.add(datum);
             }
-            mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titulosDeEventos);
-            listaEventos.setAdapter(mAdapter);
+            SimpleAdapter adapter = new SimpleAdapter(this, data,
+                        android.R.layout.simple_list_item_2,
+                        new String[] {"datos1", "datos2"},
+                        new int[] {android.R.id.text1,
+                                android.R.id.text2});
+            listaEventos.setAdapter(adapter);
+
         });
     }
     public void mostrarAgregarEventoActivity(){
         Intent intent = new Intent(this, AgregarEventoActivity.class);
         startActivity(intent);
+    }
+    public String formateoFecha(int fecha){
+        //Paso la fecha a string para poder manejarla
+        String stringFecha = Integer.toString(fecha);
+        //Intento darle formato, si no puedo la devuelvo tal cual
+        try {
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyyMMdd");
+            Date stringFechaSinFormato = formatoEntrada.parse(stringFecha);
+
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd-MM-yyyy");
+            String fechaFormateada = formatoSalida.format(stringFechaSinFormato);
+
+            return fechaFormateada;
+        } catch (Exception e) {
+            return stringFecha;
+        }
     }
 }
