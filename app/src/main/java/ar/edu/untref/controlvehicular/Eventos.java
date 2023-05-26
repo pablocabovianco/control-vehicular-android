@@ -21,8 +21,8 @@ public class Eventos {
     @ColumnInfo(name = "kilometros_evento")
     public int kilometros;
     @ColumnInfo(name = "fecha-evento")
-    public Date fecha;
-    public Eventos(String titulo, Boolean porKilometros, Date fecha, int kilometros){
+    public int fecha;
+    public Eventos(String titulo, Boolean porKilometros, int fecha, int kilometros){
         this.kilometros = kilometros;
         this.titulo = titulo;
         this.porKilometros = porKilometros;

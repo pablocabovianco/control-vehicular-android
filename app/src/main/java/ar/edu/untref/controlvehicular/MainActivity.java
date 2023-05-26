@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         agregarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //agregarDatosPrueba();
                 mostrarMostrarEventosActivity();
             }
         });
@@ -174,12 +173,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         startActivity(intent);
     }
 
-    public void agregarDato(int kilometros,String titulo,String descripcion){
-        //Creo el evento
-        EventoPorKilometraje nuevoEvento = new EventoPorKilometraje(kilometros + this.kilometrosTotales, titulo, descripcion);
-        //Lo agrego a la base
-        this.viewModel.insertEvento(nuevoEvento);
-    }
     private ArrayList findUnAskedPermissions(ArrayList wanted) {
         ArrayList result = new ArrayList();
 

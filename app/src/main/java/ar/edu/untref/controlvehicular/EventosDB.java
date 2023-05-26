@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 @Database(entities = {Eventos.class}, version = 1)
 public abstract class EventosDB extends RoomDatabase {
-    public abstract EventoDao eventoPorKilometrajeDao();
+    public abstract EventoDao eventoDao();
 
     public static EventosDB INSTANCE;
 

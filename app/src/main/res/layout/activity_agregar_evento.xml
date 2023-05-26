@@ -7,6 +7,7 @@
     tools:context=".AgregarEventoActivity">
 
     <TableLayout
+        android:id="@+id/tableLayout2"
         android:layout_width="413dp"
         android:layout_height="299dp"
         tools:layout_editor_absoluteX="-1dp"
@@ -45,11 +46,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <CheckBox
-                android:id="@+id/esPorKm"
+            <TextView
+                android:id="@+id/labelTipo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vencimiento en distancia" />
+                android:text="Vencimiento" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Spinner
+                android:id="@+id/tipoEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
         </TableRow>
 
         <TableRow
@@ -76,7 +90,7 @@
                     android:id="@+id/textKilometros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Kilometros hasta el evento" />
+                    android:hint="Por ej.: 10000" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </TableRow>
@@ -87,15 +101,27 @@
         android:id="@+id/btnGuardarEvento"
         android:layout_width="131dp"
         android:layout_height="79dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="100dp"
         android:text="Aceptar"
-        tools:layout_editor_absoluteX="251dp"
-        tools:layout_editor_absoluteY="426dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnCancelar"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
 
     <Button
         android:id="@+id/btnCancelar"
         android:layout_width="131dp"
         android:layout_height="79dp"
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="100dp"
         android:text="Cancelar"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="426dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnGuardarEvento"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

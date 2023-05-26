@@ -12,7 +12,7 @@ public class EventosRepository {
 
     EventosRepository(Application application){
         EventosDB db = EventosDB.getDatabase(application);
-        eventoDao = db.eventoPorKilometrajeDao();
+        eventoDao = db.eventoDao();
     }
     LiveData<List<Eventos>> getEvento(){
         return eventoDao.getAllEventoPorKilometraje();
