@@ -1,5 +1,7 @@
 package ar.edu.untref.controlvehicular;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,9 +18,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AgregarEventoActivity extends AppCompatActivity {
@@ -27,6 +31,7 @@ public class AgregarEventoActivity extends AppCompatActivity {
     private ArrayAdapter<String> mAdapter;
     Spinner tipoEvento;
     String fechaDeEvento;
+    private int mYear,mMonth,mDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +46,60 @@ public class AgregarEventoActivity extends AppCompatActivity {
 
         tipoEvento.setAdapter(adapter);
 
+        //Manejo de fecha
         EditText fechaDeEvento = (EditText) findViewById(R.id.fechaEvento);
-        fechaDeEvento.setOnClickListener(view -> {
-            DatePickerFragment newFragment = new DatePickerFragment();
-            newFragment.show(getSupportFragmentManager(), "datePicker");
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                // myCalendar.add(Calendar.DATE, 0);
+                String myFormat = "yyyy-MM-dd"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                fechaDeEvento.setText(sdf.format(myCalendar.getTime()));
+            }
+
+
+        };
+
+        fechaDeEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                // Launch Date Picker Dialog
+                DatePickerDialog dpd = new DatePickerDialog(AgregarEventoActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // Display Selected date in textbox
+
+                                if (year < mYear)
+                                    view.updateDate(mYear,mMonth,mDay);
+
+                                if (monthOfYear < mMonth && year == mYear)
+                                    view.updateDate(mYear,mMonth,mDay);
+
+                                if (dayOfMonth < mDay && year == mYear && monthOfYear == mMonth)
+                                    view.updateDate(mYear,mMonth,mDay);
+
+                                fechaDeEvento.setText(dayOfMonth + "-"
+                                        + (monthOfYear + 1) + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                dpd.getDatePicker().setMinDate(System.currentTimeMillis());
+                dpd.show();
+
+            }
         });
 
         Button agregarBtn = findViewById(R.id.btnGuardarEvento);
@@ -59,15 +114,17 @@ public class AgregarEventoActivity extends AppCompatActivity {
         String titulo = campoTitulo.getText().toString();
 
         EditText campoKilometros = (EditText) findViewById(R.id.textKilometros);
-        int kilometros = Integer.parseInt(campoKilometros.getText().toString());
+        int kilometros;
         Boolean esPorKm;
         //Asigno segun el tipo para cargar en la tabla
         if (tipoEvento.getSelectedItem().toString() == "Por Kilometros"){
             esPorKm = Boolean.TRUE;
             fechaDeEvento = "0";
+            kilometros = Integer.parseInt(campoKilometros.getText().toString());
         } else {
             esPorKm = Boolean.FALSE;
             kilometros = 0;
+            fechaDeEvento = "" + mYear + mMonth + mDay;
         }
         //Creo el evento
         //TODO debe agregar kilometros totales + los ingresados
@@ -90,26 +147,5 @@ public class AgregarEventoActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MostrarEventosActivity.class);
         startActivity(intent);
     }
-    //Manejo de fecha
-    public class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
 
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-            fechaDeEvento = "" + year + month + day;
-        }
-
-    }
 }
