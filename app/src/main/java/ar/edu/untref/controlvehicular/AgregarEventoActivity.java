@@ -11,12 +11,16 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,13 +43,41 @@ public class AgregarEventoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_agregar_evento);
 
         this.viewModel = ViewModelProviders.of(this).get(EventosViewModel.class);
+        TextView campoKilometros = findViewById(R.id.textKilometros);
+        TextView labelKilometros = findViewById(R.id.labelKilometros);
+
+        TextView campoFecha = findViewById(R.id.fechaEvento);
+        TextView labelFecha = findViewById(R.id.labelFecha);
+
+
         //Asigno valores de LV
         tipoEvento = findViewById(R.id.tipoEvento);
         String[] tiposEvento = new String[]{"Por Kilometros", "En fecha"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tiposEvento);
-
+        //Muestro campo de fecha o km segun corresponda
         tipoEvento.setAdapter(adapter);
+        tipoEvento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(tipoEvento.getSelectedItem().toString() == "Por Kilometros"){
+                    campoKilometros.setVisibility(View.VISIBLE);
+                    labelKilometros.setVisibility(View.VISIBLE);
+                    campoFecha.setVisibility(View.GONE);
+                    labelFecha.setVisibility(View.GONE);
+                } else {
+                    campoKilometros.setVisibility(View.GONE);
+                    labelKilometros.setVisibility(View.GONE);
+                    campoFecha.setVisibility(View.VISIBLE);
+                    labelFecha.setVisibility(View.VISIBLE);
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                campoKilometros.setVisibility(View.VISIBLE);
+                campoFecha.setVisibility(View.GONE);
+            }
+        });
         //Manejo de fecha
         EditText fechaDeEvento = (EditText) findViewById(R.id.fechaEvento);
         final Calendar myCalendar = Calendar.getInstance();
