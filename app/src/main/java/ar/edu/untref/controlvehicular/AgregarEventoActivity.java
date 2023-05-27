@@ -88,8 +88,7 @@ public class AgregarEventoActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                // myCalendar.add(Calendar.DATE, 0);
-                String myFormat = "yyyy-MM-dd"; //In which you need put here
+                String myFormat = "yyyy-MM-dd";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 fechaDeEvento.setText(sdf.format(myCalendar.getTime()));
             }
@@ -123,8 +122,7 @@ public class AgregarEventoActivity extends AppCompatActivity {
                                 if (dayOfMonth < mDay && year == mYear && monthOfYear == mMonth)
                                     view.updateDate(mYear,mMonth,mDay);
 
-                                fechaDeEvento.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
+                                fechaDeEvento.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -156,7 +154,7 @@ public class AgregarEventoActivity extends AppCompatActivity {
         } else {
             esPorKm = Boolean.FALSE;
             kilometros = 0;
-            fechaDeEvento = "" + mYear + mMonth + mDay;
+            fechaDeEvento = "" + mYear + (Integer.toString(mMonth).length() == 1 ? ("0" + mMonth) : mMonth) + mDay;
         }
         //Creo el evento
         //TODO debe agregar kilometros totales + los ingresados
