@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         params = new PlaybackParams();
 
+        if(mediaPlayer.getCurrentPosition() > 9000){
+            mediaPlayer.seekTo(1000);
+        }
+
         arduino = new Arduino(this);
         displayTextView = findViewById(R.id.diplayTextView);
         displayTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -285,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
                     System.out.println("Error en la conversión");
                 }
                 speedometer.setSpeed(speed, 500, onAnimationEnd);
+
 
                 //Ajusto pitch de reproduccion, con un audio ajustado
                 try {
