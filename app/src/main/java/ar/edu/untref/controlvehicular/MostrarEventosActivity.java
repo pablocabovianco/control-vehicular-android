@@ -1,10 +1,12 @@
 package ar.edu.untref.controlvehicular;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,6 +35,10 @@ public class MostrarEventosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar_eventos);
+        //Activo botón "Atras" en la barra de herramientas
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.viewModel = ViewModelProviders.of(this).get(EventosViewModel.class);
         listaEventos = findViewById(R.id.listaEventos);
@@ -54,7 +60,20 @@ public class MostrarEventosActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
+        if (id == android.R.id.home) {
+            // Acción a realizar cuando se presiona el botón de retroceso
+            // Abre otra actividad
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     public void mostrarEventosPorKilometraje(){
         viewModel.getListaEventos().observe(this, lista -> {
             if(lista == null || lista.size() == 0) {
