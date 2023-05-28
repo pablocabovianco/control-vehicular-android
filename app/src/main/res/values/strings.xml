@@ -21,4 +21,5 @@
     <string name="bloquearPuertas">Bloquear Puertas</string>
     <string name="desbloquearPuertas">Desbloquear Puertas</string>
     <string name="localizar">GPS</string>
+    <string name="odometroTotal">odometroTotal</string>
 </resources>

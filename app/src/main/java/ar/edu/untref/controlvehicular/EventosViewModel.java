@@ -17,7 +17,7 @@ public class EventosViewModel extends AndroidViewModel {
         listaEventosPorKilometraje = repository.getEvento();
     }
 
-    LiveData<List<Eventos>> getListaEventosPorKilometraje(){
+    LiveData<List<Eventos>> getListaEventos(){
         return listaEventosPorKilometraje;
     }
 

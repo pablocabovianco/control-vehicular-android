@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -26,7 +27,7 @@ public class MostrarEventosActivity extends AppCompatActivity {
     private ListView listaEventos;
     private ArrayAdapter<String> mAdapterItem;
     private ArrayAdapter<String> mAdapterSubItem;
-
+    public final static String EXTRA_TEXT = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +45,18 @@ public class MostrarEventosActivity extends AppCompatActivity {
                 mostrarAgregarEventoActivity();
             }
         });
+        //Se ejecuta al seleccionar un elemento de la lista
+        listaEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                mostrarEditarEventoActivity(position);
+            }
+        });
     }
 
     public void mostrarEventosPorKilometraje(){
-        viewModel.getListaEventosPorKilometraje().observe(this, lista -> {
+        viewModel.getListaEventos().observe(this, lista -> {
             if(lista == null || lista.size() == 0) {
                 return;
             }
@@ -70,6 +79,22 @@ public class MostrarEventosActivity extends AppCompatActivity {
 
         });
     }
+    public void mostrarEditarEventoActivity(int posicion){
+        Intent intent = new Intent(this, EditarEventoActivity.class);
+        viewModel.getListaEventos().observe(this, lista -> {
+            if(lista == null || lista.size() == 0) {
+                return;
+            }
+            else{
+                if(lista.get(posicion) != null){
+
+                }
+            }
+        });
+        String message = "abc";
+        intent.putExtra(EXTRA_TEXT, message);
+        startActivity(intent);
+    }
     public void mostrarAgregarEventoActivity(){
         Intent intent = new Intent(this, AgregarEventoActivity.class);
         startActivity(intent);
@@ -81,10 +106,8 @@ public class MostrarEventosActivity extends AppCompatActivity {
         try {
             SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyyMMdd");
             Date stringFechaSinFormato = formatoEntrada.parse(stringFecha);
-
             SimpleDateFormat formatoSalida = new SimpleDateFormat("dd-MM-yyyy");
             String fechaFormateada = formatoSalida.format(stringFechaSinFormato);
-
             return fechaFormateada;
         } catch (Exception e) {
             return stringFecha;

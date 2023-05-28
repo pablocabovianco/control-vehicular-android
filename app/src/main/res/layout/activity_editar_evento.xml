@@ -128,30 +128,30 @@
     </TableLayout>
 
     <Button
-        android:id="@+id/btnGuardarEvento"
+        android:id="@+id/btnEditarEvento"
         android:layout_width="131dp"
         android:layout_height="79dp"
         android:layout_marginStart="14dp"
         android:layout_marginTop="112dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="100dp"
-        android:text="Aceptar"
+        android:text="Guardar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnCancelar"
+        app:layout_constraintStart_toEndOf="@+id/btnEliminarEvento"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
 
     <Button
-        android:id="@+id/btnCancelar"
+        android:id="@+id/btnEliminarEvento"
         android:layout_width="131dp"
         android:layout_height="79dp"
         android:layout_marginStart="37dp"
         android:layout_marginTop="112dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="100dp"
-        android:text="Cancelar"
+        android:text="Eliminar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnGuardarEvento"
+        app:layout_constraintEnd_toStartOf="@+id/btnEditarEvento"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

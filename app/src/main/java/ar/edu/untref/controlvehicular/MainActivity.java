@@ -3,8 +3,10 @@ package ar.edu.untref.controlvehicular;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.usb.UsbDevice;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     private TextView displayTextView;
     private Speedometer speedometer;
 
+    public int speed = 0;
+
     private ArrayList permissionsToRequest;
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
@@ -61,8 +65,13 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     PlaybackParams params;
     //Para que una funcion se ejecute continuamente
     private Handler mHandler = new Handler();
-    //Placeholder del kilometraje
-    public int kilometrosTotales = 1600;
+
+    SharedPreferences sharedPreferences;
+    public float odometroTotal;
+    //Testigo
+    public int odometroAnterior;
+    //Odometro que se muestra en la pantalla
+    TextView odometroPantalla;
 
     //BBDD
     EventosViewModel viewModel;
@@ -99,8 +108,17 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         speedometer = findViewById(R.id.speedometer) ;
         //Manejo de BBDD
         this.viewModel = ViewModelProviders.of(this).get(EventosViewModel.class);
+        odometroPantalla = findViewById(R.id.OdometroTotal) ;
+
+        //Saco la variable odometroTotal del archivo odometros
+        sharedPreferences = getSharedPreferences("odometros", Context.MODE_PRIVATE);
+        odometroTotal = sharedPreferences.getFloat("odometroTotal", 0.0f);
+        odometroAnterior = (int) Math.floor(odometroTotal);
+        odometroPantalla.setText("TOTAL                        " + String.format("%.1f", odometroTotal) + "   Km");
         //Inicio funcion de ejecucion continua
         mHandler.postDelayed(mRunnable, 100);
+
+
         Button agregarBtn = findViewById(R.id.AgregarEventos);
         agregarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,7 +197,16 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             if(mediaPlayer.getCurrentPosition() > 30000){
                 mediaPlayer.seekTo(0);
             }
-            // Vuelve a programar la ejecución después del intervalo de tiempo deseado
+            odometroTotal = odometroTotal + (speed/3600);
+            odometroPantalla.setText("TOTAL                        " + String.format("%.1f", odometroTotal) + "   Km");
+            if((int) Math.floor(odometroTotal) != odometroAnterior){
+                //Guardo y sobreescribo odometro anterior
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putFloat("odometroTotal", odometroTotal);
+                editor.apply();
+                odometroAnterior = (int) Math.floor(odometroTotal);
+            }
+            // Vuelve a programar la ejecución después de 1000ms
             mHandler.postDelayed(this, 1000);
         }
     };
@@ -292,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
                     }
                 };
 
-                int speed = 0;
+                speed = 0;
 
                 try {
                     speed = Integer.parseInt(message.trim());
