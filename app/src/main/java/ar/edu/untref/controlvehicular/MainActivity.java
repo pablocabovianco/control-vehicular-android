@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     //Sonidos
     MediaPlayer mediaPlayer;
     PlaybackParams params;
+    //Para que una funcion se ejecute continuamente
+    private Handler mHandler = new Handler();
     //Placeholder del kilometraje
     public int kilometrosTotales = 1600;
 
@@ -73,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         setContentView(R.layout.activity_main);
 
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.sonido_i4);;
+        mediaPlayer = MediaPlayer.create(this, R.raw.diesel_truck);;
+
         //Sonido constante
         mediaPlayer.setLooping(true);
         //Empieza a sonar el motor
@@ -82,9 +85,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         params = new PlaybackParams();
 
-        if(mediaPlayer.getCurrentPosition() > 9000){
-            mediaPlayer.seekTo(1000);
-        }
 
         arduino = new Arduino(this);
         displayTextView = findViewById(R.id.diplayTextView);
@@ -94,14 +94,13 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         permissions.add(ACCESS_COARSE_LOCATION);
 
         permissionsToRequest = findUnAskedPermissions(permissions);
-        //get the permissions we have asked for before but are not granted..
-        //we will store this in a global list to access later.
 
 
         speedometer = findViewById(R.id.speedometer) ;
         //Manejo de BBDD
         this.viewModel = ViewModelProviders.of(this).get(EventosViewModel.class);
-
+        //Inicio funcion de ejecucion continua
+        mHandler.postDelayed(mRunnable, 100);
         Button agregarBtn = findViewById(R.id.AgregarEventos);
         agregarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +171,18 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
     }
 
+    //Funcion que se ejecuta cada 1 segundo
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            //Reseteo sonido de motor antes de que termine para que no haya delay
+            if(mediaPlayer.getCurrentPosition() > 30000){
+                mediaPlayer.seekTo(0);
+            }
+            // Vuelve a programar la ejecución después del intervalo de tiempo deseado
+            mHandler.postDelayed(this, 1000);
+        }
+    };
     public void mostrarMostrarEventosActivity(){
         Intent intent = new Intent(this, MostrarEventosActivity.class);
         startActivity(intent);
