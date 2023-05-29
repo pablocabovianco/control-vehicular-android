@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             if(mediaPlayer.getCurrentPosition() > 30000){
                 mediaPlayer.seekTo(0);
             }
+
             odometroTotal = odometroTotal + (speed/3600);
             odometroPantalla.setText("TOTAL                        " + String.format("%.1f", odometroTotal) + "   Km");
             if((int) Math.floor(odometroTotal) != odometroAnterior){

@@ -36,6 +36,7 @@ public class AgregarEventoActivity extends AppCompatActivity {
     Spinner tipoEvento;
     String fechaDeEvento;
     private int mYear,mMonth,mDay;
+    public int yearEvento, monthEvento, dayEvento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +124,9 @@ public class AgregarEventoActivity extends AppCompatActivity {
                                     view.updateDate(mYear,mMonth,mDay);
 
                                 fechaDeEvento.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
+                                yearEvento = year;
+                                monthEvento = monthOfYear+1;
+                                dayEvento = dayOfMonth;
                             }
                         }, mYear, mMonth, mDay);
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -154,7 +157,7 @@ public class AgregarEventoActivity extends AppCompatActivity {
         } else {
             esPorKm = Boolean.FALSE;
             kilometros = 0;
-            fechaDeEvento = "" + mYear + (Integer.toString(mMonth).length() == 1 ? ("0" + mMonth) : mMonth) + mDay;
+            fechaDeEvento = "" + yearEvento + (Integer.toString(monthEvento).length() == 1 ? ("0" + monthEvento) : monthEvento) + dayEvento;
         }
         //Creo el evento
         //TODO debe agregar kilometros totales + los ingresados
