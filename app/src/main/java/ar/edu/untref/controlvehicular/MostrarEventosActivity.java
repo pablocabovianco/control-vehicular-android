@@ -29,7 +29,9 @@ public class MostrarEventosActivity extends AppCompatActivity {
     private ListView listaEventos;
     private ArrayAdapter<String> mAdapterItem;
     private ArrayAdapter<String> mAdapterSubItem;
-    public final static String EXTRA_TEXT = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT";
+    public final static String EXTRA_TEXT_FECHA = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT_FECHA";
+    public final static String EXTRA_TEXT_KM = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT_KM";
+    public final static String EXTRA_TEXT_TITULO = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT_TITULO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,12 +108,12 @@ public class MostrarEventosActivity extends AppCompatActivity {
             }
             else{
                 if(lista.get(posicion) != null){
-
+                    intent.putExtra(EXTRA_TEXT_FECHA, lista.get(posicion).fecha);
+                    intent.putExtra(EXTRA_TEXT_KM, lista.get(posicion).kilometros);
+                    intent.putExtra(EXTRA_TEXT_TITULO, lista.get(posicion).titulo);
                 }
             }
         });
-        String message = "abc";
-        intent.putExtra(EXTRA_TEXT, message);
         startActivity(intent);
     }
     public void mostrarAgregarEventoActivity(){

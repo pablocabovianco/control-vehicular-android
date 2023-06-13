@@ -15,6 +15,9 @@ public interface EventoDao {
     @Query("SELECT * FROM Eventos")
     LiveData<List<Eventos>> getAllEventoPorKilometraje();
 
+    @Insert
+    void updateEvento(Eventos... eventos);
+
     @Query("DELETE FROM Eventos")
     void deleteAll();
 
