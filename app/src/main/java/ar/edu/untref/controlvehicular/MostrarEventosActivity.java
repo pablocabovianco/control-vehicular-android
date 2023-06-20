@@ -32,6 +32,9 @@ public class MostrarEventosActivity extends AppCompatActivity {
     public final static String EXTRA_TEXT_FECHA = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT_FECHA";
     public final static String EXTRA_TEXT_KM = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT_KM";
     public final static String EXTRA_TEXT_TITULO = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT_TITULO";
+    public final static String EXTRA_TEXT_ID = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT_ID";
+
+    public final static String EXTRA_TEXT_POR_KILOMETROS = "com.ar.edu.untref.controlvehicular.EXTRA_TEXT_POR_KILOMETROS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,18 +105,12 @@ public class MostrarEventosActivity extends AppCompatActivity {
     }
     public void mostrarEditarEventoActivity(int posicion){
         Intent intent = new Intent(this, EditarEventoActivity.class);
-        viewModel.getListaEventos().observe(this, lista -> {
-            if(lista == null || lista.size() == 0) {
-                return;
-            }
-            else{
-                if(lista.get(posicion) != null){
-                    intent.putExtra(EXTRA_TEXT_FECHA, lista.get(posicion).fecha);
-                    intent.putExtra(EXTRA_TEXT_KM, lista.get(posicion).kilometros);
-                    intent.putExtra(EXTRA_TEXT_TITULO, lista.get(posicion).titulo);
-                }
-            }
-        });
+        Eventos evento = viewModel.getListaEventos().getValue().get(posicion);
+        intent.putExtra(EXTRA_TEXT_FECHA, evento.fecha);
+        intent.putExtra(EXTRA_TEXT_KM, evento.kilometros);
+        intent.putExtra(EXTRA_TEXT_TITULO, evento.titulo);
+        intent.putExtra(EXTRA_TEXT_ID, evento.id);
+        intent.putExtra(EXTRA_TEXT_POR_KILOMETROS, evento.porKilometros);
         startActivity(intent);
     }
     public void mostrarAgregarEventoActivity(){

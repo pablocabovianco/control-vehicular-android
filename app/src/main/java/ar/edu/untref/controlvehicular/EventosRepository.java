@@ -21,8 +21,11 @@ public class EventosRepository {
     void insert(Eventos eventos){
         new insertAsyncTask(eventoDao).execute(eventos);
     }
-    void delete(){
-        new insertAsyncTaskDelete(eventoDao).execute();
+    void update(Eventos evento){
+        new insertAsyncTaskUpdate(eventoDao).execute(evento);
+    }
+    void delete(int id){
+        new insertAsyncTaskDelete(eventoDao).execute(id);
     }
 
     private static class insertAsyncTask extends AsyncTask<Eventos, Void, Void> {
@@ -31,7 +34,6 @@ public class EventosRepository {
         insertAsyncTask(EventoDao eventoDao){
             taskDao = eventoDao;
         }
-
         @Override
         protected Void doInBackground(Eventos... eventosEnTabla) {
             taskDao.insertAll(eventosEnTabla[0]);
@@ -40,7 +42,21 @@ public class EventosRepository {
 
     }
 
-    private static class insertAsyncTaskDelete extends AsyncTask<Eventos, Void, Void> {
+    private static class insertAsyncTaskUpdate extends AsyncTask<Eventos, Void, Void> {
+        private EventoDao taskDao;
+
+        protected insertAsyncTaskUpdate(EventoDao eventoDao) {
+            taskDao = eventoDao;
+        }
+        @Override
+        protected Void doInBackground(Eventos... eventosEnTabla) {
+            taskDao.updateEvento(eventosEnTabla[0].id,eventosEnTabla[0].titulo,eventosEnTabla[0].kilometros,eventosEnTabla[0].porKilometros,eventosEnTabla[0].fecha);
+            return null;
+        }
+
+    }
+
+    private static class insertAsyncTaskDelete extends AsyncTask<Integer, Void, Void> {
         private EventoDao taskDao;
 
         insertAsyncTaskDelete(EventoDao eventoDao){
@@ -48,10 +64,9 @@ public class EventosRepository {
         }
 
         @Override
-        protected Void doInBackground(Eventos... eventosEnTabla) {
-            taskDao.deleteAll();
+        protected Void doInBackground(Integer... ids) {
+            taskDao.delete(ids[0]);
             return null;
         }
-
     }
 }

@@ -24,8 +24,11 @@ public class EventosViewModel extends AndroidViewModel {
     public void insertEvento(Eventos eventos){
         repository.insert(eventos);
     }
-    public void deleteAllEventos(){
-        repository.delete();
+    public void updateEvento(Eventos evento){
+        repository.update(evento);
+    }
+    public void deleteEvento(int id){
+        repository.delete(id);
     }
 
 

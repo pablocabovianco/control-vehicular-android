@@ -15,10 +15,10 @@ public interface EventoDao {
     @Query("SELECT * FROM Eventos")
     LiveData<List<Eventos>> getAllEventoPorKilometraje();
 
-    @Insert
-    void updateEvento(Eventos... eventos);
+    @Query("UPDATE Eventos SET titulo_evento = :titulo, kilometros_evento = :kilometros, por_kilometros = :porKilometros, fecha_evento = :fecha WHERE id = :id")
+    void updateEvento(int id, String titulo, int kilometros, boolean porKilometros, int fecha);
 
-    @Query("DELETE FROM Eventos")
-    void deleteAll();
+    @Query("DELETE FROM Eventos WHERE id = :id")
+    void delete(int id);
 
 }

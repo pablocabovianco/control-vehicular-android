@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class EditarEventoActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class EditarEventoActivity extends AppCompatActivity {
     String fechaDeEvento;
     private int mYear,mMonth,mDay;
     public int yearEvento, monthEvento, dayEvento;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,15 @@ public class EditarEventoActivity extends AppCompatActivity {
         TextView campoFecha = findViewById(R.id.fechaEvento);
         TextView labelFecha = findViewById(R.id.labelFecha);
 
+        Intent intent = getIntent();
+        id = intent.getIntExtra(MostrarEventosActivity.EXTRA_TEXT_ID, -1);
+        EditText campoTitulo = (EditText) findViewById(R.id.textTitulo);
+        campoTitulo.setText(intent.getStringExtra(MostrarEventosActivity.EXTRA_TEXT_TITULO));
+        campoKilometros.setText(String.valueOf(intent.getIntExtra(MostrarEventosActivity.EXTRA_TEXT_KM,-1)));
+
+        campoFecha.setText(formateoFecha(intent.getIntExtra(MostrarEventosActivity.EXTRA_TEXT_FECHA, -1)));
+        Boolean esPorKilometro = intent.getBooleanExtra(MostrarEventosActivity.EXTRA_TEXT_POR_KILOMETROS, false);
+
 
         //Asigno valores de LV
         tipoEvento = findViewById(R.id.tipoEvento);
@@ -51,7 +62,7 @@ public class EditarEventoActivity extends AppCompatActivity {
         tipoEvento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(tipoEvento.getSelectedItem().toString() == "Por Kilometros"){
+                if(esPorKilometro){
                     campoKilometros.setVisibility(View.VISIBLE);
                     labelKilometros.setVisibility(View.VISIBLE);
                     campoFecha.setVisibility(View.GONE);
@@ -132,10 +143,10 @@ public class EditarEventoActivity extends AppCompatActivity {
     }
 
     public void onEditarEvento(){
-        //CAMBIAR PARA QUE EDITE!!!
         //Obtengo las variables de pantalla
         EditText campoTitulo = (EditText) findViewById(R.id.textTitulo);
         String titulo = campoTitulo.getText().toString();
+        Intent intent;
 
         EditText campoKilometros = (EditText) findViewById(R.id.textKilometros);
         int kilometros;
@@ -155,19 +166,40 @@ public class EditarEventoActivity extends AppCompatActivity {
         Eventos nuevoEvento = new Eventos(titulo,esPorKm,Integer.parseInt(fechaDeEvento), kilometros);
 
         //Lo agrego a la base y actualizo la lista
-        this.viewModel.insertEvento(nuevoEvento);
+
+        nuevoEvento.id = id;
+
+        this.viewModel.updateEvento(nuevoEvento);
 
         //Limpio los campos
         campoTitulo.getText().clear();
         campoKilometros.getText().clear();
 
         //Vuelvo a la pantalla anterior
-        Intent intent = new Intent(this, MostrarEventosActivity.class);
+        intent = new Intent(this, MostrarEventosActivity.class);
         startActivity(intent);
     }
 
     public void onEliminar(){
-        //HACER QUE ELIMINE
+        this.viewModel.deleteEvento(id);
+        Intent intent;
+        intent = new Intent(this, MostrarEventosActivity.class);
+        startActivity(intent);
+    }
+
+    private String formateoFecha(int fecha){
+        //Paso la fecha a string para poder manejarla
+        String stringFecha = Integer.toString(fecha);
+        //Intento darle formato, si no puedo la devuelvo tal cual
+        try {
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyyMMdd");
+            Date stringFechaSinFormato = formatoEntrada.parse(stringFecha);
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd-MM-yyyy");
+            String fechaFormateada = formatoSalida.format(stringFechaSinFormato);
+            return fechaFormateada;
+        } catch (Exception e) {
+            return stringFecha;
+        }
     }
 
 }
