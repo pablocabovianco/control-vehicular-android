@@ -42,7 +42,10 @@ import static ar.edu.untref.controlvehicular.CodeConstants.*;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ArduinoListener {
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
         //Saco la variable odometroTotal del archivo odometros
         sharedPreferences = getSharedPreferences("odometros", Context.MODE_PRIVATE);
-        odometroTotal = sharedPreferences.getFloat("odometroTotal", 0.0f);
+        odometroTotal = sharedPreferences.getFloat("odometroTotal", 100.0f);
         odometroAnterior = (int) Math.floor(odometroTotal);
         odometroPantalla.setText("TOTAL                        " + String.format("%.1f", odometroTotal) + "   Km");
         //Inicio funcion de ejecucion continua
@@ -183,10 +186,15 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
                 locationTrack = new LocationTrack(MainActivity.this);
                 abrirGoogleMaps();
+                sendEmail();
 
             }
         });
 
+    }
+
+    private void sendEmail() {
+        new EnviadorMailsActivity().execute();
     }
 
     //Funcion que se ejecuta cada 1 segundo
@@ -206,11 +214,37 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
                 editor.putFloat("odometroTotal", odometroTotal);
                 editor.apply();
                 odometroAnterior = (int) Math.floor(odometroTotal);
+                try {
+                    verificarEventosVencidos();
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
             // Vuelve a programar la ejecución después de 1000ms
             mHandler.postDelayed(this, 1000);
         }
     };
+
+    private void verificarEventosVencidos() throws ParseException {
+        List<Eventos> lista = this.viewModel.getListaEventos().getValue();
+        Date fechaActual = new Date();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaEvento;
+
+        for (Eventos evento: lista) {
+            if(evento.porKilometros){
+                if(evento.kilometros > odometroTotal){
+                    sendEmail();
+                }
+            }else{
+                fechaEvento = formatoFecha.parse(formateoFecha(evento.fecha));
+                if(fechaActual.after(fechaEvento)){
+                    sendEmail();
+                }
+            }
+        }
+    }
+
     public void mostrarMostrarEventosActivity(){
         Intent intent = new Intent(this, MostrarEventosActivity.class);
         startActivity(intent);
@@ -388,6 +422,21 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
+    }
+
+    private String formateoFecha(int fecha){
+        //Paso la fecha a string para poder manejarla
+        String stringFecha = Integer.toString(fecha);
+        //Intento darle formato, si no puedo la devuelvo tal cual
+        try {
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyyMMdd");
+            Date stringFechaSinFormato = formatoEntrada.parse(stringFecha);
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd-MM-yyyy");
+            String fechaFormateada = formatoSalida.format(stringFechaSinFormato);
+            return fechaFormateada;
+        } catch (Exception e) {
+            return stringFecha;
+        }
     }
 
     //CODIGO IVAN
