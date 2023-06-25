@@ -53,7 +53,7 @@ public class AgregarEventoActivity extends AppCompatActivity {
 
         //Asigno valores de LV
         tipoEvento = findViewById(R.id.tipoEvento);
-        String[] tiposEvento = new String[]{"Por Kilometros", "En fecha"};
+        String[] tiposEvento = new String[]{"Por Kilometros", "En fecha", "Ambos"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tiposEvento);
         //Muestro campo de fecha o km segun corresponda
         tipoEvento.setAdapter(adapter);
@@ -65,9 +65,14 @@ public class AgregarEventoActivity extends AppCompatActivity {
                     labelKilometros.setVisibility(View.VISIBLE);
                     campoFecha.setVisibility(View.GONE);
                     labelFecha.setVisibility(View.GONE);
-                } else {
+                } else if(tipoEvento.getSelectedItem().toString() == "En fecha") {
                     campoKilometros.setVisibility(View.GONE);
                     labelKilometros.setVisibility(View.GONE);
+                    campoFecha.setVisibility(View.VISIBLE);
+                    labelFecha.setVisibility(View.VISIBLE);
+                } else {
+                    campoKilometros.setVisibility(View.VISIBLE);
+                    labelKilometros.setVisibility(View.VISIBLE);
                     campoFecha.setVisibility(View.VISIBLE);
                     labelFecha.setVisibility(View.VISIBLE);
                 }
@@ -154,13 +159,16 @@ public class AgregarEventoActivity extends AppCompatActivity {
             esPorKm = Boolean.TRUE;
             fechaDeEvento = "0";
             kilometros = Integer.parseInt(campoKilometros.getText().toString());
-        } else {
+        } else if (tipoEvento.getSelectedItem().toString() == "En fecha"){
             esPorKm = Boolean.FALSE;
             kilometros = 0;
             fechaDeEvento = "" + yearEvento + (Integer.toString(monthEvento).length() == 1 ? ("0" + monthEvento) : monthEvento) + dayEvento;
+        } else {
+            esPorKm = Boolean.FALSE;
+            fechaDeEvento = "" + yearEvento + (Integer.toString(monthEvento).length() == 1 ? ("0" + monthEvento) : monthEvento) + dayEvento;
+            kilometros = Integer.parseInt(campoKilometros.getText().toString());
         }
         //Creo el evento
-        //TODO debe agregar kilometros totales + los ingresados
         Eventos nuevoEvento = new Eventos(titulo,esPorKm,Integer.parseInt(fechaDeEvento), kilometros);
 
         //Lo agrego a la base y actualizo la lista
