@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
             odometroTotal = odometroTotal + (speed/3600);
             odometroPantalla.setText("TOTAL                        " + String.format("%.1f", odometroTotal) + "   Km");
+            odometroPantalla.invalidate();
             if((int) Math.floor(odometroTotal) != odometroAnterior){
                 //Guardo y sobreescribo odometro anterior
                 SharedPreferences.Editor editor = sharedPreferences.edit();
