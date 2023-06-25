@@ -47,6 +47,8 @@ public class EditarEventoActivity extends AppCompatActivity {
         id = intent.getIntExtra(MostrarEventosActivity.EXTRA_TEXT_ID, -1);
         EditText campoTitulo = (EditText) findViewById(R.id.textTitulo);
         campoTitulo.setText(intent.getStringExtra(MostrarEventosActivity.EXTRA_TEXT_TITULO));
+        //Variable temporal para mostrar correcta la LV
+        int kmTemp = intent.getIntExtra(MostrarEventosActivity.EXTRA_TEXT_KM,-1);
         campoKilometros.setText(String.valueOf(intent.getIntExtra(MostrarEventosActivity.EXTRA_TEXT_KM,-1)));
 
         campoFecha.setText(formateoFecha(intent.getIntExtra(MostrarEventosActivity.EXTRA_TEXT_FECHA, -1)));
@@ -55,7 +57,7 @@ public class EditarEventoActivity extends AppCompatActivity {
 
         //Asigno valores de LV
         tipoEvento = findViewById(R.id.tipoEvento);
-        String[] tiposEvento = new String[]{"Por Kilometros", "En fecha"};
+        String[] tiposEvento = new String[]{"Por Kilometros", "En fecha", "Ambos"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tiposEvento);
         //Muestro campo de fecha o km segun corresponda
         tipoEvento.setAdapter(adapter);
@@ -67,11 +69,19 @@ public class EditarEventoActivity extends AppCompatActivity {
                     labelKilometros.setVisibility(View.VISIBLE);
                     campoFecha.setVisibility(View.GONE);
                     labelFecha.setVisibility(View.GONE);
-                } else {
+                    tipoEvento.setSelection(0);
+                } else if(kmTemp == 0){
                     campoKilometros.setVisibility(View.GONE);
                     labelKilometros.setVisibility(View.GONE);
                     campoFecha.setVisibility(View.VISIBLE);
                     labelFecha.setVisibility(View.VISIBLE);
+                    tipoEvento.setSelection(1);
+                } else {
+                    campoKilometros.setVisibility(View.VISIBLE);
+                    labelKilometros.setVisibility(View.VISIBLE);
+                    campoFecha.setVisibility(View.VISIBLE);
+                    labelFecha.setVisibility(View.VISIBLE);
+                    tipoEvento.setSelection(2);
                 }
             }
 
@@ -156,10 +166,14 @@ public class EditarEventoActivity extends AppCompatActivity {
             esPorKm = Boolean.TRUE;
             fechaDeEvento = "0";
             kilometros = Integer.parseInt(campoKilometros.getText().toString());
-        } else {
+        } else if (tipoEvento.getSelectedItem().toString() == "Por Kilometros"){
             esPorKm = Boolean.FALSE;
             kilometros = 0;
             fechaDeEvento = "" + yearEvento + (Integer.toString(monthEvento).length() == 1 ? ("0" + monthEvento) : monthEvento) + dayEvento;
+        } else {
+            esPorKm = Boolean.FALSE;
+            fechaDeEvento = "" + yearEvento + (Integer.toString(monthEvento).length() == 1 ? ("0" + monthEvento) : monthEvento) + dayEvento;
+            kilometros = Integer.parseInt(campoKilometros.getText().toString());
         }
         //Creo el evento
         //TODO debe agregar kilometros totales + los ingresados
