@@ -219,14 +219,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+
             <TextView
-                android:id="@+id/diplayTextView"
+                android:id="@+id/indicadorMarcha"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="6pt"
+                android:layout_marginBottom="6pt"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="MARCHA: N"
+                android:textColor="#575757"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/speedometer"
+
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/indicadores"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6pt"
                 android:layout_marginBottom="6pt"
                 android:layout_weight="1"
-                android:textSize="18pt"
+                android:gravity="center"
+                android:text=""
+                android:textColor="#FF6262"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/speedometer"
 

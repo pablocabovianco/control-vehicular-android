@@ -51,7 +51,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
     private Arduino arduino;
-    private TextView displayTextView;
+    private TextView indicadores;
+    private TextView indicadorMarcha;
     private Speedometer speedometer;
 
     public int speed = 0;
@@ -99,8 +100,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
         arduino = new Arduino(this);
-        displayTextView = findViewById(R.id.diplayTextView);
-        displayTextView.setMovementMethod(new ScrollingMovementMethod());
+        indicadores = findViewById(R.id.indicadores);
+        indicadores.setMovementMethod(new ScrollingMovementMethod());
+
+        indicadorMarcha = findViewById(R.id.indicadorMarcha);
 
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
@@ -186,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
                 locationTrack = new LocationTrack(MainActivity.this);
                 abrirGoogleMaps();
-                sendEmail();
+                //sendEmail();
 
             }
         });
@@ -319,8 +322,77 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     @Override
     public void onArduinoMessage(byte[] bytes) {
         //Al recibir información de arduino:
+        //String datos = new String(bytes);
+        //display(datos);
+
+        // Convertir los bytes a una cadena
         String datos = new String(bytes);
-        display(datos);
+
+        // Dividir la cadena en el carácter de dos puntos
+        String[] partes = datos.split(":");
+
+        // Si la cadena se dividió en dos partes
+        if (partes.length == 2) {
+            String tipo = partes[0].trim();
+            String valor = partes[1].trim().toUpperCase();
+
+            // Si el tipo es "KMH", actualiza el velocímetro
+            if (tipo.equals("KMH")) {
+                display(valor);
+            }
+            // Si el tipo es un código de estado, procesarlo
+            else {
+                procesarCodigoEstado(tipo, valor);
+            }
+        }
+    }
+
+    private void procesarCodigoEstado(final String tipo, final String valor) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (tipo.equals("CAMBIO_D") || tipo.equals("CAMBIO_R")) {
+                    if (valor.equals("1")) {
+                        String marcha = "MARCHA: " + (tipo.equals("CAMBIO_D") ? "D" : "R");
+                        indicadorMarcha.setText(marcha);
+                    } else {
+                        indicadorMarcha.setText("MARCHA: N");
+                    }
+                } else {
+                    //indicadores.setText(tipo+':'+valor);
+                    String mensaje;
+                    switch (tipo) {
+                        case "PUERTA_AB":
+                            mensaje = "PUERTA ABIERTA";
+                            break;
+                        case "GUINO_IZQ":
+                            mensaje = "GUIÑO IZQUIERDO";
+                            break;
+                        case "GUINO_DER":
+                            mensaje = "GUIÑO DERECHO";
+                            break;
+                        case "CINTURON":
+                            mensaje = "CINTURÓN DESABROCHADO";
+                            break;
+                        // agregar aquí más casos según se necesite
+                        default:
+                            mensaje = "";
+                    }
+                    if (valor.equals("1")) {
+                        String previo = indicadores.getText().toString();
+                        if (!previo.isEmpty()) {
+                            previo += "\n";
+                        }
+                        indicadores.setText(previo + mensaje);
+                    } else {
+                        // elimina el mensaje de los indicadores
+                        String previo = indicadores.getText().toString();
+                        previo = previo.replace(mensaje, "").replace("\n\n", "\n").trim();
+                        indicadores.setText(previo);
+                    }
+                }
+            }
+        });
     }
 
 
@@ -341,10 +413,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         }, 3000);
     }
     private void display(final String message){
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //displayTextView.setText(message);
 
                 //función auxiliar necesaria para actualizar el velocímetro
                 Function0<Unit> onAnimationEnd = new Function0<Unit>() {
