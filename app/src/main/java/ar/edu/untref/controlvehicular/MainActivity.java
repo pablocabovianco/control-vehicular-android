@@ -87,17 +87,18 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Verifica si mediaPlayer ya está inicializado
+        if(mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.diesel_truck);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            params = new PlaybackParams();
+        }
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.diesel_truck);;
-
-        //Sonido constante
-        mediaPlayer.setLooping(true);
-        //Empieza a sonar el motor
-        mediaPlayer.start();
-
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        params = new PlaybackParams();
-
+        // Comienza a reproducir si no está reproduciendo
+        if(!mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
 
         arduino = new Arduino(this);
         indicadores = findViewById(R.id.indicadores);
