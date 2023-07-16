@@ -58,7 +58,7 @@ public class EditarEventoActivity extends AppCompatActivity {
         //Asigno valores de LV
         tipoEvento = findViewById(R.id.tipoEvento);
         String[] tiposEvento = new String[]{"Por Kilometros", "En fecha", "Ambos"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tiposEvento);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, tiposEvento);
         //Muestro campo de fecha o km segun corresponda
         tipoEvento.setAdapter(adapter);
         tipoEvento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

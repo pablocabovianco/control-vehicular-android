@@ -87,7 +87,7 @@
                 android:id="@+id/AgregarEventos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Agregar Evento" />
+                android:text="Agenda" />
         </TableRow>
     </TableLayout>
 
@@ -148,7 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/localizar"
-                android:textSize="10sp" />
+                android:textSize="14sp" />
 
         </TableRow>
 
